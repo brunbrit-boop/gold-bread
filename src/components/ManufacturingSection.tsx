@@ -189,15 +189,14 @@ export default function ManufacturingSection() {
           </div>
 
           <div className="-mx-4 sm:-mx-6 lg:-mx-8 overflow-hidden">
-            {/* CARROSSEL ÚNICO CONTÍNUO E INFINITO: ESQUERDA → DIREITA */}
+            {/* CARROSSEL ÚNICO CONTÍNUO: DIREITA → ESQUERDA INICIANDO NO CARD 01 AO CENTRO */}
             <div className="relative w-full overflow-hidden mask-edge-fade py-2">
-              <div className="flex animate-marquee-right">
-                {/* BLOCO 1 (ETAPAS 01 A 08) */}
-                <div className="flex gap-6 shrink-0 pr-6">
-                  {allProcessSteps.map((step, idx) => (
+              <div className="flex animate-marquee-center-left">
+                {[0, 1, 2, 3].map((blockIdx) =>
+                  allProcessSteps.map((step, idx) => (
                     <div
-                      key={`step-a-${idx}`}
-                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                      key={`step-b${blockIdx}-${idx}`}
+                      className="process-card-item bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-3.5">
@@ -223,42 +222,8 @@ export default function ManufacturingSection() {
                         <span className="text-[10px] text-[#A1887F] opacity-75">Controle Automático</span>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                {/* BLOCO 2 (CÓPIA EXATA PARA LOOP CONTÍNUO E SEM SALTO) */}
-                <div className="flex gap-6 shrink-0 pr-6">
-                  {allProcessSteps.map((step, idx) => (
-                    <div
-                      key={`step-b-${idx}`}
-                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-3.5">
-                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
-                            {step.step}
-                          </span>
-                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
-                            {step.badge}
-                          </span>
-                        </div>
-                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
-                          {step.title}
-                        </h5>
-                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
-                          {step.desc}
-                        </p>
-                      </div>
-                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
-                        <span className="flex items-center gap-1 text-[#B57D00]">
-                          <Sparkles className="w-3 h-3" />
-                          {step.sub}
-                        </span>
-                        <span className="text-[10px] text-[#A1887F] opacity-75">Controle Automático</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                  ))
+                )}
               </div>
             </div>
           </div>

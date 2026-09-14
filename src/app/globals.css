@@ -173,6 +173,53 @@ h1, h2, h3, .font-heading {
   animation-play-state: paused;
 }
 
+/* Card Marquee Dimensions */
+:root {
+  --process-card-w: 370px;
+  --process-card-gap: 24px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --process-card-w: 320px;
+    --process-card-gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --process-card-w: 280px;
+    --process-card-gap: 16px;
+  }
+}
+
+.process-card-item {
+  width: var(--process-card-w);
+  margin-right: var(--process-card-gap);
+  flex-shrink: 0;
+}
+
+/* Right-to-Left Infinite Marquee with Card 01 Starting Centered */
+@keyframes marquee-start-center-left {
+  0% {
+    transform: translate3d(calc(50vw - (var(--process-card-w) / 2) - (8 * (var(--process-card-w) + var(--process-card-gap)))), 0, 0);
+  }
+  100% {
+    transform: translate3d(calc(50vw - (var(--process-card-w) / 2) - (16 * (var(--process-card-w) + var(--process-card-gap)))), 0, 0);
+  }
+}
+
+.animate-marquee-center-left {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-start-center-left 48s linear infinite;
+}
+
+.animate-marquee-center-left:hover {
+  animation-play-state: paused;
+}
+
 .mask-edge-fade {
   mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
