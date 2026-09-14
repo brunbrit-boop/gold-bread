@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import AnimatedProcessCarousel from "./AnimatedProcessCarousel";
-import { Factory, Sparkles, ShieldCheck, Truck, Flame, Gauge, Check, Cpu, Heart } from "lucide-react";
+import { Factory, Sparkles, ShieldCheck, Truck, Flame, Gauge, Check, Cpu, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function ManufacturingSection() {
   const allProcessSteps = [
@@ -81,6 +81,89 @@ export default function ManufacturingSection() {
       desc: "Frota dedicada e distribuição ágil para abastecer empórios, restaurantes, redes de supermercados e atacadistas diariamente com pão fresco.",
     },
   ];
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Centraliza o Card 01 no centro da tela ao carregar
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const timer = setTimeout(() => {
+      const centerCard = el.querySelector('#process-card-center-01') as HTMLElement;
+      if (centerCard) {
+        el.scrollLeft = centerCard.offsetLeft - (el.clientWidth / 2) + (centerCard.clientWidth / 2);
+      }
+    }, 60);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Movimento contínuo e suave da direita para a esquerda
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let animationFrameId: number;
+    let lastTime = performance.now();
+
+    const step = (time: number) => {
+      const delta = time - lastTime;
+      lastTime = time;
+
+      if (!isPaused && el) {
+        // Desliza continuamente da direita para a esquerda (~28px por segundo)
+        el.scrollLeft += (28 * delta) / 1000;
+
+        // Loop contínuo infinito sem salto
+        const firstBlock = el.querySelector('.process-block-0') as HTMLElement;
+        if (firstBlock) {
+          const blockSize = firstBlock.offsetWidth;
+          if (el.scrollLeft >= blockSize * 2) {
+            el.scrollLeft -= blockSize;
+          } else if (el.scrollLeft <= 0) {
+            el.scrollLeft += blockSize;
+          }
+        }
+      }
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    animationFrameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isPaused]);
+
+  // Controle pelas setas (avançar e voltar)
+  const getCardStep = () => {
+    if (!scrollRef.current) return 394;
+    const firstCard = scrollRef.current.querySelector('.process-card-item') as HTMLElement;
+    if (firstCard) {
+      const style = window.getComputedStyle(firstCard);
+      const marginRight = parseFloat(style.marginRight) || 24;
+      return firstCard.offsetWidth + marginRight;
+    }
+    return 394;
+  };
+
+  const handleNext = () => {
+    if (!scrollRef.current) return;
+    setIsPaused(true);
+    const step = getCardStep();
+    scrollRef.current.scrollBy({ left: step, behavior: 'smooth' });
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => setIsPaused(false), 5000);
+  };
+
+  const handlePrev = () => {
+    if (!scrollRef.current) return;
+    setIsPaused(true);
+    const step = getCardStep();
+    scrollRef.current.scrollBy({ left: -step, behavior: 'smooth' });
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => setIsPaused(false), 5000);
+  };
 
   return (
     <section
@@ -188,42 +271,76 @@ export default function ManufacturingSection() {
             </p>
           </div>
 
-          <div className="-mx-4 sm:-mx-6 lg:-mx-8 overflow-hidden">
-            {/* CARROSSEL ÚNICO CONTÍNUO: DIREITA → ESQUERDA INICIANDO NO CARD 01 AO CENTRO */}
+          <div className="relative -mx-4 sm:-mx-6 lg:-mx-8">
+            {/* SETA DE CONTROLE ESQUERDA */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Voltar etapa do processo"
+              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 text-[#3E2723] shadow-xl border border-[#EAD9CA] hover:bg-[#F2A900] hover:border-[#F2A900] hover:scale-110 active:scale-95 transition-all flex items-center justify-center cursor-pointer group"
+            >
+              <ChevronLeft className="w-6 h-6 text-[#3E2723] group-hover:-translate-x-0.5 transition-transform" />
+            </button>
+
+            {/* SETA DE CONTROLE DIREITA */}
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Avançar etapa do processo"
+              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 text-[#3E2723] shadow-xl border border-[#EAD9CA] hover:bg-[#F2A900] hover:border-[#F2A900] hover:scale-110 active:scale-95 transition-all flex items-center justify-center cursor-pointer group"
+            >
+              <ChevronRight className="w-6 h-6 text-[#3E2723] group-hover:translate-x-0.5 transition-transform" />
+            </button>
+
+            {/* CONTAINER COM MÁSCARA E SCROLL INTERATIVO */}
             <div className="relative w-full overflow-hidden mask-edge-fade py-2">
-              <div className="flex animate-marquee-center-left">
-                {[0, 1, 2, 3].map((blockIdx) =>
-                  allProcessSteps.map((step, idx) => (
-                    <div
-                      key={`step-b${blockIdx}-${idx}`}
-                      className="process-card-item bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-3.5">
-                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
-                            {step.step}
-                          </span>
-                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
-                            {step.badge}
-                          </span>
+              <div
+                ref={scrollRef}
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => {
+                  if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+                  resumeTimeoutRef.current = setTimeout(() => setIsPaused(false), 4000);
+                }}
+                className="flex overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden select-none py-1"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                {[0, 1, 2, 3].map((blockIdx) => (
+                  <div key={`block-${blockIdx}`} className={`flex shrink-0 process-block-${blockIdx}`}>
+                    {allProcessSteps.map((step, idx) => (
+                      <div
+                        key={`step-b${blockIdx}-${idx}`}
+                        id={blockIdx === 1 && idx === 0 ? "process-card-center-01" : undefined}
+                        className="process-card-item bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-3.5">
+                            <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                              {step.step}
+                            </span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                              {step.badge}
+                            </span>
+                          </div>
+                          <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                            {step.title}
+                          </h5>
+                          <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                            {step.desc}
+                          </p>
                         </div>
-                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
-                          {step.title}
-                        </h5>
-                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
-                          {step.desc}
-                        </p>
+                        <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                          <span className="flex items-center gap-1 text-[#B57D00]">
+                            <Sparkles className="w-3 h-3" />
+                            {step.sub}
+                          </span>
+                          <span className="text-[10px] text-[#A1887F] opacity-75">Controle Automático</span>
+                        </div>
                       </div>
-                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
-                        <span className="flex items-center gap-1 text-[#B57D00]">
-                          <Sparkles className="w-3 h-3" />
-                          {step.sub}
-                        </span>
-                        <span className="text-[10px] text-[#A1887F] opacity-75">Controle Automático</span>
-                      </div>
-                    </div>
-                  ))
-                )}
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
