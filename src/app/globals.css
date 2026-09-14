@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+:root {
+  /* Diretrizes de Design Gold Bread */
+  --bg-primary: #FAF6F0; /* Creme / Off-White principal */
+  --bg-card: #FFFFFF;
+  --bg-secondary: #E3D5C8; /* Bege / Trigo suave */
+  --bg-secondary-dark: #D4A373; /* Trigo Tostado */
+  
+  --text-main: #3E2723; /* Marrom Escuro / Café */
+  --text-muted: #5D4037; /* Marrom médio com alto contraste */
+  --text-light: #795548;
+  
+  --accent-gold: #F2A900; /* Amarelo Dourado Gold Bread */
+  --accent-gold-hover: #D99600;
+  --accent-gold-light: #FFF4D9;
+  
+  --border-warm: #EAD9CA;
+  --border-gold: rgba(242, 169, 0, 0.35);
+
+  --font-sans-app: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  --font-serif-app: var(--font-playfair), Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* Compensação da navbar fixa */
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-sans-app);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+h1, h2, h3, .font-heading {
+  font-family: var(--font-serif-app);
+}
+
+/* Microinterações e efeitos de transição */
+.btn-gold {
+  background-color: #F2A900;
+  color: #3E2723;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(242, 169, 0, 0.35);
+}
+
+.btn-gold:hover {
+  background-color: #D99600;
+  color: #271714;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(242, 169, 0, 0.45);
+}
+
+.btn-outline-gold {
+  border: 2px solid #F2A900;
+  color: #3E2723;
+  background-color: transparent;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-gold:hover {
+  background-color: #F2A900;
+  color: #3E2723;
+  transform: translateY(-2px);
+}
+
+/* Cartões com toque artesanal e acolhedor */
+.card-artisanal {
+  background: #FFFFFF;
+  border: 1px solid var(--border-warm);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(62, 39, 35, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-artisanal:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(62, 39, 35, 0.09);
+  border-color: rgba(242, 169, 0, 0.5);
+}
+
+/* Efeito dourado nos menus */
+.nav-link {
+  position: relative;
+  color: #3E2723;
+  font-weight: 600;
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2.5px;
+  bottom: -4px;
+  left: 0;
+  background-color: #F2A900;
+  border-radius: 2px;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link:hover {
+  color: #B57D00;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
