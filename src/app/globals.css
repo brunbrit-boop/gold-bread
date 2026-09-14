@@ -165,7 +165,7 @@ h1, h2, h3, .font-heading {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: marquee-right 38s linear infinite;
+  animation: marquee-right 48s linear infinite;
 }
 
 .animate-marquee-left:hover,
