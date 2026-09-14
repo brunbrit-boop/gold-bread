@@ -5,30 +5,65 @@ import AnimatedProcessCarousel from "./AnimatedProcessCarousel";
 import { Factory, Sparkles, ShieldCheck, Truck, Flame, Gauge, Check, Cpu, Heart } from "lucide-react";
 
 export default function ManufacturingSection() {
-  const processSteps = [
+  const row1Steps = [
     {
       step: "01",
       title: "Dosagem & Mistura Industrial",
       badge: "Precisão & Pureza",
       desc: "Pesagem computadorizada e masseiras industriais em aço inoxidável com controle térmico rigoroso da água e da farinha nobre.",
+      sub: "Entrada de Matéria-Prima",
     },
     {
       step: "02",
       title: "Fermentação Biológica Natural",
       badge: "A Alma Artesanal",
       desc: "Câmaras climatizadas que respeitam o tempo natural da massa, desenvolvendo o sabor característico, aroma suave e fácil digestão.",
+      sub: "Repouso & Aromas",
     },
     {
       step: "03",
       title: "Laminação Contínua Milimétrica",
       badge: "Padrão & Elasticidade",
       desc: "Esteiras com cilindros automáticos de altíssima precisão que garantem a espessura homogênea de cada disco sem quebrar a rede de glúten.",
+      sub: "Moldagem de Precisão",
     },
     {
       step: "04",
       title: "Forno Túnel a 350°C & Choque Térmico",
       badge: "O Bolsão Perfeito",
       desc: "Assamento relâmpago que gera o vapor interno instantâneo, inflando o pão e criando as duas camadas sem ressecar a massa.",
+      sub: "Alta Temperatura",
+    },
+  ];
+
+  const row2Steps = [
+    {
+      step: "05",
+      title: "Resfriamento em Esteira Gradual",
+      badge: "Retenção de Maciez",
+      desc: "Transição suave de temperatura em esteira higienizada com ar filtrado para conservar a elasticidade e umidade interna ideal.",
+      sub: "Controle Térmico",
+    },
+    {
+      step: "06",
+      title: "Inspeção Óptica & Controle Digital",
+      badge: "Garantia de Qualidade",
+      desc: "Sensores verificam diâmetro milimétrico, coloração dourada homogênea e integridade de cada disco antes da embalagem.",
+      sub: "Padrão Rigoroso",
+    },
+    {
+      step: "07",
+      title: "Empacotamento Hermético Automatizado",
+      badge: "Zero Contato Manual",
+      desc: "Selamento em atmosfera protegida que mantém a textura fresca e o aroma de recém-assado por muito mais tempo na gôndola.",
+      sub: "Segurança BPF",
+    },
+    {
+      step: "08",
+      title: "Expedição Climatizada & Entrega Diária",
+      badge: "Logística Ágil",
+      desc: "Distribuição dedicada para abastecer supermercados, empórios e redes gastronômicas com pontualidade e frescor constante.",
+      sub: "Distribuição Diária",
     },
   ];
 
@@ -141,39 +176,287 @@ export default function ManufacturingSection() {
 
         </div>
 
-        {/* 4 ETAPAS DO PROCESSO DE PRODUÇÃO */}
-        <div className="mb-16">
+        {/* A JORNADA DA MASSA: DOIS CARROSSÉIS CONTÍNUOS E INFINITOS */}
+        <div className="mb-20">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h4 className="text-2xl font-bold text-[#3E2723] font-serif">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF6F0] text-[#B57D00] text-xs font-bold border border-[#EAD9CA] mb-3">
+              <Sparkles className="w-3.5 h-3.5 fill-[#F2A900]" />
+              <span>Linha Contínua &amp; Monitoramento em Tempo Real</span>
+            </div>
+            <h4 className="text-2xl sm:text-3xl font-bold text-[#3E2723] font-serif">
               A Jornada da Massa: Da Dosagem ao Empacotamento
             </h4>
-            <p className="text-sm text-[#5D4037] mt-1">
+            <p className="text-sm text-[#5D4037] mt-2 leading-relaxed">
               Como cada ingrediente é transformado no legítimo pão libanês através de controle eletrônico.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {processSteps.map((step) => (
-              <div
-                key={step.step}
-                className="bg-white p-6 rounded-2xl border border-[#EAD9CA] shadow-sm relative group hover:border-[#F2A900] hover:shadow-md transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-3xl font-black text-[#F2A900] font-serif">
-                      {step.step}
-                    </span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA]">
-                      {step.badge}
-                    </span>
-                  </div>
-                  <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif">{step.title}</h5>
-                  <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
-                    {step.desc}
-                  </p>
+          <div className="space-y-6 -mx-4 sm:-mx-6 lg:-mx-8 overflow-hidden">
+            {/* PRIMEIRA LINHA: MOVIMENTO CONTÍNUO DIREITA → ESQUERDA */}
+            <div className="relative w-full overflow-hidden mask-edge-fade py-1">
+              <div className="flex animate-marquee-left">
+                {/* BLOCO 1 */}
+                <div className="flex gap-6 shrink-0 pr-6">
+                  {row1Steps.map((step, idx) => (
+                    <div
+                      key={`r1-a-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Etapa de Preparação</span>
+                      </div>
+                    </div>
+                  ))}
+                  {row1Steps.map((step, idx) => (
+                    <div
+                      key={`r1-b-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Etapa de Preparação</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* BLOCO 2 (CÓPIA EXATA PARA LOOP PERFEITO) */}
+                <div className="flex gap-6 shrink-0 pr-6">
+                  {row1Steps.map((step, idx) => (
+                    <div
+                      key={`r1-c-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Etapa de Preparação</span>
+                      </div>
+                    </div>
+                  ))}
+                  {row1Steps.map((step, idx) => (
+                    <div
+                      key={`r1-d-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Etapa de Preparação</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* SEGUNDA LINHA: MOVIMENTO CONTÍNUO ESQUERDA → DIREITA */}
+            <div className="relative w-full overflow-hidden mask-edge-fade py-1">
+              <div className="flex animate-marquee-right">
+                {/* BLOCO 1 */}
+                <div className="flex gap-6 shrink-0 pr-6">
+                  {row2Steps.map((step, idx) => (
+                    <div
+                      key={`r2-a-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Controle &amp; Entrega</span>
+                      </div>
+                    </div>
+                  ))}
+                  {row2Steps.map((step, idx) => (
+                    <div
+                      key={`r2-b-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Controle &amp; Entrega</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* BLOCO 2 (CÓPIA EXATA PARA LOOP PERFEITO) */}
+                <div className="flex gap-6 shrink-0 pr-6">
+                  {row2Steps.map((step, idx) => (
+                    <div
+                      key={`r2-c-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Controle &amp; Entrega</span>
+                      </div>
+                    </div>
+                  ))}
+                  {row2Steps.map((step, idx) => (
+                    <div
+                      key={`r2-d-${idx}`}
+                      className="w-[280px] sm:w-[330px] md:w-[370px] shrink-0 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-[#EAD9CA] shadow-sm hover:border-[#F2A900] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group select-none text-left"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3.5">
+                          <span className="text-2xl sm:text-3xl font-black text-[#F2A900] font-serif group-hover:scale-105 transition-transform">
+                            {step.step}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#8D6E63] px-2.5 py-1 rounded-full border border-[#EAD9CA] group-hover:border-[#F2A900]/40 transition-colors">
+                            {step.badge}
+                          </span>
+                        </div>
+                        <h5 className="text-base font-bold text-[#3E2723] mb-2 font-serif group-hover:text-[#B57D00] transition-colors leading-snug">
+                          {step.title}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-[#5D4037] leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-4 border-t border-[#FAF6F0] flex items-center justify-between text-[11px] font-medium text-[#8D6E63]">
+                        <span className="flex items-center gap-1 text-[#B57D00]">
+                          <Sparkles className="w-3 h-3" />
+                          {step.sub}
+                        </span>
+                        <span className="text-[10px] text-[#A1887F] opacity-75">Controle &amp; Entrega</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
