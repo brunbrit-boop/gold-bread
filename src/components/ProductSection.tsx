@@ -202,49 +202,83 @@ export default function ProductSection() {
           </div>
         </div>
 
-        {/* GALERIA ADICIONAL / ESPAÇOS RESERVADOS PARA FOTOS DE ALTA QUALIDADE */}
-        <div className="mt-16 bg-[#E3D5C8]/30 p-8 sm:p-10 rounded-3xl border border-[#D4A373]/30">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        {/* GALERIA GASTRONÔMICA GOLD BREAD */}
+        <div className="mt-16 bg-[#E3D5C8]/30 p-6 sm:p-10 rounded-3xl border border-[#D4A373]/30 shadow-inner">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
-              <h4 className="text-xl font-bold text-[#3E2723] font-serif">
-                Galeria Gastronômica &amp; Espaços Reservados
+              <h4 className="text-xl sm:text-2xl font-bold text-[#3E2723] font-serif">
+                Galeria Gastronômica Gold Bread
               </h4>
-              <p className="text-xs sm:text-sm text-[#5D4037]">
-                Fotografias profissionais dedicadas a despertar o apetite e valorizar a embalagem Gold Bread.
+              <p className="text-xs sm:text-sm text-[#5D4037] mt-1">
+                Fotografias profissionais dedicadas a despertar o apetite e valorizar a autenticidade libanesa.
               </p>
             </div>
-            <span className="text-xs font-bold text-[#B57D00] bg-[#FFF4D9] px-3.5 py-1.5 rounded-full border border-[#F2A900]/40">
+            <span className="text-xs font-bold text-[#B57D00] bg-[#FFF4D9] px-4 py-1.5 rounded-full border border-[#F2A900]/40 shadow-sm flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
               Alta Resolução
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             
-            {/* Espaço 1 */}
-            <div className="relative rounded-2xl overflow-hidden border-2 border-dashed border-[#D4A373] bg-white aspect-[4/3] flex flex-col items-center justify-center p-4 text-center group hover:border-[#F2A900] transition-colors">
-              <div className="w-12 h-12 rounded-full bg-[#FAF6F0] flex items-center justify-center text-[#F2A900] mb-2 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-6 h-6" />
+            {/* Foto 1 - Embalagem */}
+            <div className="relative rounded-2xl overflow-hidden shadow-md group aspect-[4/3] bg-[#2E1A11] border border-[#D4A373]/40">
+              <Image 
+                src="/imagens/embalagem-gold-bread.jpg" 
+                alt="Embalagem Gold Bread" 
+                fill 
+                className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out" 
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-5 text-white">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="p-1 rounded-md bg-[#F2A900]/90 text-white">
+                    <Sparkles className="w-3.5 h-3.5" />
+                  </span>
+                  <h5 className="text-sm font-bold text-white tracking-wide">Embalagem Gold Bread</h5>
+                </div>
+                <p className="text-xs text-stone-200 line-clamp-2">Pack oficial com atmosfera protetora e selo máximo de frescor e maciez.</p>
               </div>
-              <h5 className="text-sm font-bold text-[#3E2723]">Embalagem Gold Bread</h5>
-              <p className="text-[11px] text-[#5D4037] mt-1">Espaço reservado para o pack oficial e selo de frescor</p>
             </div>
 
-            {/* Espaço 2 */}
-            <div className="relative rounded-2xl overflow-hidden border-2 border-dashed border-[#D4A373] bg-white aspect-[4/3] flex flex-col items-center justify-center p-4 text-center group hover:border-[#F2A900] transition-colors">
-              <div className="w-12 h-12 rounded-full bg-[#FAF6F0] flex items-center justify-center text-[#F2A900] mb-2 group-hover:scale-110 transition-transform">
-                <Flame className="w-6 h-6" />
+            {/* Foto 2 - Fornada Quentinha */}
+            <div className="relative rounded-2xl overflow-hidden shadow-md group aspect-[4/3] bg-[#2E1A11] border border-[#D4A373]/40">
+              <Image 
+                src="/imagens/fornada-quentinha.jpg" 
+                alt="Fornada Quentinha saindo do forno" 
+                fill 
+                className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out" 
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-5 text-white">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="p-1 rounded-md bg-[#F2A900]/90 text-white">
+                    <Flame className="w-3.5 h-3.5" />
+                  </span>
+                  <h5 className="text-sm font-bold text-white tracking-wide">Fornada Quentinha</h5>
+                </div>
+                <p className="text-xs text-stone-200 line-clamp-2">Pão pita recém-saído do forno de pedra, estufado e com vapor aromático irresistível.</p>
               </div>
-              <h5 className="text-sm font-bold text-[#3E2723]">Fornada Quentinha</h5>
-              <p className="text-[11px] text-[#5D4037] mt-1">Espaço reservado para fotos com vapor saindo do pão</p>
             </div>
 
-            {/* Espaço 3 */}
-            <div className="relative rounded-2xl overflow-hidden border-2 border-dashed border-[#D4A373] bg-white aspect-[4/3] flex flex-col items-center justify-center p-4 text-center group hover:border-[#F2A900] transition-colors">
-              <div className="w-12 h-12 rounded-full bg-[#FAF6F0] flex items-center justify-center text-[#F2A900] mb-2 group-hover:scale-110 transition-transform">
-                <Heart className="w-6 h-6" />
+            {/* Foto 3 - Receitas de Chefs */}
+            <div className="relative rounded-2xl overflow-hidden shadow-md group aspect-[4/3] bg-[#2E1A11] border border-[#D4A373]/40">
+              <Image 
+                src="/imagens/receitas-chefs.jpg" 
+                alt="Receitas de Chefs com pão libanês" 
+                fill 
+                className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out" 
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-5 text-white">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="p-1 rounded-md bg-[#F2A900]/90 text-white">
+                    <Heart className="w-3.5 h-3.5" />
+                  </span>
+                  <h5 className="text-sm font-bold text-white tracking-wide">Receitas de Chefs</h5>
+                </div>
+                <p className="text-xs text-stone-200 line-clamp-2">Harmonização gastronômica com homus, coalhada seca, azeite de oliva e ervas finas.</p>
               </div>
-              <h5 className="text-sm font-bold text-[#3E2723]">Receitas de Chefs</h5>
-              <p className="text-[11px] text-[#5D4037] mt-1">Espaço reservado para pratos autorais de parceiros</p>
             </div>
 
           </div>
