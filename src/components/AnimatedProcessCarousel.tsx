@@ -1,212 +1,139 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
 
-const START_FRAME = 10;
-const END_FRAME = 300;
-const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 291 frames
-const FPS = 22;
-
-function padFrame(num: number): string {
-  return num.toString().padStart(3, "0");
-}
-
 export default function AnimatedProcessCarousel() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(TOTAL_FRAMES).fill(null));
+  const videoRef = useRef<HTMLVideoElement>(null);
   
-  const [currentFrameIdx, setCurrentFrameIdx] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [initialBuffered, setInitialBuffered] = useState<boolean>(false);
-
-  const reqIdRef = useRef<number | null>(null);
-  const lastTimeRef = useRef<number>(0);
-  const frameIdxRef = useRef<number>(0);
-  frameIdxRef.current = currentFrameIdx;
-
+  const [progress, setProgress] = useState<number>(0);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  
   // Informações apenas das Etapas 1, 2, 3 e 4
-  const getStageInfo = useCallback((idx: number) => {
-    const frameNum = START_FRAME + idx;
-    if (frameNum <= 75) {
+  const getStageInfo = useCallback((prog: number) => {
+    if (prog <= 25) {
       return {
         stageBadge: "Etapa 1",
         title: "Alimentação & Dosagem Automatizada",
-        desc: "Ingredientes nobres dosados com precisão computadorizada em masseiras industriais.",
       };
-    } else if (frameNum <= 150) {
+    } else if (prog <= 50) {
       return {
         stageBadge: "Etapa 2",
         title: "Laminação & Moldagem de Alta Precisão",
-        desc: "Cilindros automáticos calibrando a espessura milimétrica sem perder a maleabilidade artesanal.",
       };
-    } else if (frameNum <= 225) {
+    } else if (prog <= 75) {
       return {
         stageBadge: "Etapa 3",
         title: "Forno Túnel a 350°C & Choque Térmico",
-        desc: "Assamento ultrarrápido que gera o vapor interno e cria o bolsão tradicional do pão libanês.",
       };
     } else {
       return {
         stageBadge: "Etapa 4",
         title: "Resfriamento & Embalamento Hermético",
-        desc: "Linha contínua automatizada que sela o frescor e a maciez para entrega diária.",
       };
     }
   }, []);
 
-  // Pré-carregamento progressivo em background
   useEffect(() => {
-    let active = true;
+    const video = videoRef.current;
+    if (!video) return;
 
-    const loadSingleFrame = (i: number): Promise<void> => {
-      return new Promise((resolve) => {
-        const frameNum = START_FRAME + i;
-        const img = new Image();
-        img.src = `/process/ezgif-frame-${padFrame(frameNum)}.png`;
-        img.onload = () => {
-          if (!active) return;
-          imagesRef.current[i] = img;
-          if (i >= 20) {
-            setInitialBuffered(true);
-          }
-          resolve();
-        };
-        img.onerror = () => resolve();
-      });
-    };
-
-    const loadImages = async () => {
-      // Carrega os primeiros 25 frames para início imediato
-      const initial = [];
-      for (let i = 0; i < Math.min(25, TOTAL_FRAMES); i++) {
-        initial.push(loadSingleFrame(i));
-      }
-      await Promise.all(initial);
-
-      // Carrega os demais frames em segundo plano
-      const CHUNK = 10;
-      for (let i = 25; i < TOTAL_FRAMES; i += CHUNK) {
-        if (!active) break;
-        const chunk = [];
-        for (let j = i; j < Math.min(i + CHUNK, TOTAL_FRAMES); j++) {
-          chunk.push(loadSingleFrame(j));
-        }
-        await Promise.all(chunk);
+    const onTimeUpdate = () => {
+      if (video.duration) {
+        setProgress((video.currentTime / video.duration) * 100);
       }
     };
+    
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onLoadedData = () => {
+      setIsLoaded(true);
+      video.play().catch(() => setIsPlaying(false));
+    };
+    
+    // Fallback if video is already loaded from cache
+    if (video.readyState >= 3) {
+      onLoadedData();
+    }
 
-    loadImages();
+    video.addEventListener("timeupdate", onTimeUpdate);
+    video.addEventListener("play", onPlay);
+    video.addEventListener("pause", onPause);
+    video.addEventListener("loadeddata", onLoadedData);
+    video.addEventListener("ended", () => {
+      setIsPlaying(false);
+      video.currentTime = 0;
+      setProgress(0);
+    });
 
     return () => {
-      active = false;
+      video.removeEventListener("timeupdate", onTimeUpdate);
+      video.removeEventListener("play", onPlay);
+      video.removeEventListener("pause", onPause);
+      video.removeEventListener("loadeddata", onLoadedData);
     };
   }, []);
 
-  // Animação contínua no Canvas
-  useEffect(() => {
-    const render = (time: number) => {
-      const interval = 1000 / FPS;
-
-      if (isPlaying && initialBuffered) {
-        if (!lastTimeRef.current) lastTimeRef.current = time;
-        const delta = time - lastTimeRef.current;
-
-        if (delta >= interval) {
-          lastTimeRef.current = time - (delta % interval);
-          const nextIdx = (frameIdxRef.current + 1) % TOTAL_FRAMES;
-          setCurrentFrameIdx(nextIdx);
-        }
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
       }
+    }
+  };
 
-      const canvas = canvasRef.current;
-      if (canvas) {
-        let img = imagesRef.current[frameIdxRef.current];
-        if (!img || !img.complete) {
-          for (let k = frameIdxRef.current; k >= 0; k--) {
-            if (imagesRef.current[k] && imagesRef.current[k]!.complete) {
-              img = imagesRef.current[k];
-              break;
-            }
-          }
-        }
-
-        const ctx = canvas.getContext("2d");
-        if (ctx && img && img.complete) {
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          const rect = canvas.getBoundingClientRect();
-          const targetW = Math.round(rect.width * dpr);
-          const targetH = Math.round(rect.height * dpr);
-
-          if (canvas.width !== targetW || canvas.height !== targetH) {
-            canvas.width = targetW;
-            canvas.height = targetH;
-          }
-
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = "high";
-
-          const imgRatio = img.width / img.height;
-          const canvasRatio = canvas.width / canvas.height;
-          let drawW: number, drawH: number, offsetX: number, offsetY: number;
-
-          if (canvasRatio > imgRatio) {
-            drawW = canvas.width;
-            drawH = canvas.width / imgRatio;
-            offsetX = 0;
-            offsetY = (canvas.height - drawH) / 2;
-          } else {
-            drawH = canvas.height;
-            drawW = canvas.height * imgRatio;
-            offsetX = (canvas.width - drawW) / 2;
-            offsetY = 0;
-          }
-
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
-        }
-      }
-
-      reqIdRef.current = requestAnimationFrame(render);
-    };
-
-    reqIdRef.current = requestAnimationFrame(render);
-    return () => {
-      if (reqIdRef.current) cancelAnimationFrame(reqIdRef.current);
-    };
-  }, [isPlaying, initialBuffered]);
-
-  const togglePlay = () => setIsPlaying((prev) => !prev);
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentFrameIdx(parseInt(e.target.value, 10));
-  };
-  const stepPrev = () => {
-    setCurrentFrameIdx((prev) => (prev > 0 ? prev - 1 : TOTAL_FRAMES - 1));
-  };
-  const stepNext = () => {
-    setCurrentFrameIdx((prev) => (prev < TOTAL_FRAMES - 1 ? prev + 1 : 0));
-  };
-  const resetToStart = () => {
-    setCurrentFrameIdx(0);
+    const val = parseFloat(e.target.value);
+    if (videoRef.current && videoRef.current.duration) {
+      videoRef.current.currentTime = (val / 100) * videoRef.current.duration;
+      setProgress(val);
+    }
   };
 
-  const stage = getStageInfo(currentFrameIdx);
+  const stepPrev = () => {
+    if (videoRef.current && videoRef.current.duration) {
+      videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 1);
+    }
+  };
+
+  const stepNext = () => {
+    if (videoRef.current && videoRef.current.duration) {
+      videoRef.current.currentTime = Math.min(videoRef.current.duration, videoRef.current.currentTime + 1);
+    }
+  };
+
+  const resetToStart = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      if (!isPlaying) {
+        videoRef.current.play();
+      }
+    }
+  };
+
+  const stage = getStageInfo(progress);
 
   return (
     <div className="w-full flex flex-col space-y-3">
       {/* QUADRO DO VÍDEO / FRAMES */}
       <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[16/10] bg-[#2E1812] group select-none">
         
-        {/* Canvas de exibição dos frames */}
-        <canvas
-          ref={canvasRef}
+        <video
+          ref={videoRef}
+          src="/process/processo.mp4"
+          playsInline
+          muted
+          loop={false}
           className="w-full h-full object-cover block cursor-pointer"
           onClick={togglePlay}
           title={isPlaying ? "Pausar" : "Reproduzir"}
         />
 
         {/* LOADING INICIAL SUAVE */}
-        {!initialBuffered && (
-          <div className="absolute inset-0 bg-[#2E1812]/90 backdrop-blur-sm flex flex-col items-center justify-center text-white z-30 p-6 text-center">
+        {!isLoaded && (
+          <div className="absolute inset-0 bg-[#2E1812]/90 backdrop-blur-sm flex flex-col items-center justify-center text-white z-30 p-6 text-center pointer-events-none">
             <div className="w-10 h-10 border-3 border-[#F2A900] border-t-transparent rounded-full animate-spin mb-3" />
             <p className="text-sm font-semibold font-serif text-[#FAF6F0]">
               Carregando processo de fabricação...
@@ -223,9 +150,8 @@ export default function AnimatedProcessCarousel() {
           </div>
         </div>
 
-
         {/* ÍCONE PLAY CENTRAL QUANDO PAUSADO */}
-        {!isPlaying && initialBuffered && (
+        {!isPlaying && isLoaded && (
           <div
             onClick={togglePlay}
             className="absolute inset-0 flex items-center justify-center bg-black/30 z-20 cursor-pointer"
@@ -283,8 +209,9 @@ export default function AnimatedProcessCarousel() {
           <input
             type="range"
             min={0}
-            max={TOTAL_FRAMES - 1}
-            value={currentFrameIdx}
+            max={100}
+            step={0.1}
+            value={progress}
             onChange={handleSeek}
             className="w-full h-2 bg-[#E3D5C8] rounded-lg appearance-none cursor-pointer accent-[#F2A900]"
           />
